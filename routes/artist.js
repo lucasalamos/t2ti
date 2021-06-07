@@ -59,12 +59,37 @@ router.post("/", async (req, res) => {
         _id: btoa(req.body.name).slice(0, 22),
         name: req.body.name,
         age: req.body.age,
-        albums: "/artists/" + btoa(req.body.name).slice(0, 22) + "/albums",
-        tracks: "/artists/" + btoa(req.body.name).slice(0, 22) + "/tracks",
-        self: "/artists/" + btoa(req.body.name).slice(0, 22),
+        albums:
+          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          btoa(req.body.name).slice(0, 22) +
+          "/albums",
+        tracks:
+          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          btoa(req.body.name).slice(0, 22) +
+          "/tracks",
+        self:
+          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          btoa(req.body.name).slice(0, 22),
       });
       await artist.save();
-      res.status(201).json(artist);
+      response = {
+        name: req.body.name,
+        age: req.body.age,
+        albums:
+          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          btoa(req.body.name).slice(0, 22) +
+          "/albums",
+        tracks:
+          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          btoa(req.body.name).slice(0, 22) +
+          "/tracks",
+        self:
+          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          btoa(req.body.name).slice(0, 22),
+      };
+
+      res.status(201).send(response);
+      //res.status(201).json(artist);
     }
   }
 });
