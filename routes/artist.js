@@ -25,7 +25,8 @@ router.get("/:artist_id", async (req, res) => {
 
 router.get("/:artist_id/albums", async (req, res) => {
   const albums = await Album.find({ artist_id: req.params.artist_id });
-  if (albums) {
+  if (albums.length !== 0) {
+    console.log(albums);
     res.status(200).json(albums);
   } else {
     res.status(404).send("Not Found");
@@ -60,36 +61,33 @@ router.post("/", async (req, res) => {
         name: req.body.name,
         age: req.body.age,
         albums:
-          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          "http://localhost:3000/artists/" +
           btoa(req.body.name).slice(0, 22) +
           "/albums",
         tracks:
-          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          "http://localhost:3000/artists/" +
           btoa(req.body.name).slice(0, 22) +
           "/tracks",
         self:
-          "https://gentle-bayou-17296.herokuapp.com/artists/" +
-          btoa(req.body.name).slice(0, 22),
+          "http://localhost:3000/artists/" + btoa(req.body.name).slice(0, 22),
       });
       await artist.save();
       response = {
         name: req.body.name,
         age: req.body.age,
         albums:
-          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          "http://localhost:3000/artists/" +
           btoa(req.body.name).slice(0, 22) +
           "/albums",
         tracks:
-          "https://gentle-bayou-17296.herokuapp.com/artists/" +
+          "http://localhost:3000/artists/" +
           btoa(req.body.name).slice(0, 22) +
           "/tracks",
         self:
-          "https://gentle-bayou-17296.herokuapp.com/artists/" +
-          btoa(req.body.name).slice(0, 22),
+          "http://localhost:3000/artists/" + btoa(req.body.name).slice(0, 22),
       };
 
       res.status(201).send(response);
-      //res.status(201).json(artist);
     }
   }
 });
@@ -108,22 +106,39 @@ router.post("/:artist_id/albums", async (req, res) => {
       if (album) {
         res.status(409).json(album);
       } else {
-        album = new Album({
+        const album = new Album({
           _id: btoa(req.body.name + ":" + req.params.artist_id).slice(0, 22),
           artist_id: req.params.artist_id,
           name: req.body.name,
           genre: req.body.genre,
-          artist: "/artists/" + req.params.artist_id,
+          artist:
+            "https://gentle-bayou-17296.herokuapp.com/artists/" +
+            req.params.artist_id,
           tracks:
-            "/albums/" +
+            "https://gentle-bayou-17296.herokuapp.com/albums/" +
             btoa(req.body.name + ":" + req.params.artist_id).slice(0, 22) +
             "/tracks",
           self:
-            "/albums/" +
+            "https://gentle-bayou-17296.herokuapp.com/albums/" +
             btoa(req.body.name + ":" + req.params.artist_id).slice(0, 22),
         });
         await album.save();
-        res.status(201).json(album);
+        response = {
+          artist_id: req.params.artist_id,
+          name: req.body.name,
+          genre: req.body.genre,
+          artist:
+            "https://gentle-bayou-17296.herokuapp.com/artists/" +
+            req.params.artist_id,
+          tracks:
+            "https://gentle-bayou-17296.herokuapp.com/albums/" +
+            btoa(req.body.name + ":" + req.params.artist_id).slice(0, 22) +
+            "/tracks",
+          self:
+            "https://gentle-bayou-17296.herokuapp.com/albums/" +
+            btoa(req.body.name + ":" + req.params.artist_id).slice(0, 22),
+        };
+        res.status(201).send(response);
       }
     }
   }
@@ -148,7 +163,7 @@ router.put("/:artist_id/albums/play", async (req, res) => {
 
 router.delete("/:artist_id", async (req, res) => {
   const artist = await Artist.deleteOne({ _id: req.params.artist_id });
-  if (artists) {
+  if (artist) {
     res.status(204).json(artist);
   } else {
     res.status(404).send("Not Found");

@@ -32,37 +32,51 @@ router.get("/:album_id/tracks", async (req, res) => {
 });
 
 router.post("/:album_id/tracks", async (req, res) => {
-  if (
-    typeof req.body.name != "string" ||
-    typeof req.body.duration != "number" ||
-    typeof req.body.times_played != "number"
-  ) {
-    res.status(400).send("Bad Request");
+  const album = await Album.findById(req.params.album_id);
+  if (!album) {
+    res.status(422).send("Unprocessable Entity");
   } else {
-    const track = await Track.findById(
-      btoa(req.body.name + ":" + req.params.album_id).slice(0, 22)
-    );
-    if (track) {
-      res.status(409).json(track);
+    if (
+      typeof req.body.name != "string" ||
+      typeof req.body.duration != "number"
+    ) {
+      res.status(400).send("Bad Request");
     } else {
-      const album = await Album.findById(req.params.album_id);
-      if (!album) {
-        res.status(422).send("Unprocessable Entity");
+      const track = await Track.findById(
+        btoa(req.body.name + ":" + req.params.album_id).slice(0, 22)
+      );
+      if (track) {
+        res.status(409).json(track);
       } else {
-        const track = new Track({
-          _id: btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
-          album_id: req.params.album_id,
-          name: req.body.name,
-          duration: req.body.duration,
-          times_played: req.body.times_played,
-          artist: "/artists/" + album.artist_id,
-          album: "/albums/" + req.params.album_id,
-          self:
-            "/tracks/" +
-            btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
-        });
-        await track.save();
-        res.status(201).json(track);
+        const album = await Album.findById(req.params.album_id);
+        if (!album) {
+          res.status(422).send("Unprocessable Entity");
+        } else {
+          const track = new Track({
+            _id: btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
+            album_id: req.params.album_id,
+            name: req.body.name,
+            duration: req.body.duration,
+            times_played: 0,
+            artist: "http://localhost:3000/artists/" + album.artist_id,
+            album: "http://localhost:3000/albums/" + req.params.album_id,
+            self:
+              "http://localhost:3000/tracks/" +
+              btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
+          });
+          await track.save();
+          response = {
+            name: req.body.name,
+            duration: req.body.duration,
+            times_played: 0,
+            artist: "http://localhost:3000/artists/" + album.artist_id,
+            album: "http://localhost:3000/albums/" + req.params.album_id,
+            self:
+              "http://localhost:3000/tracks/" +
+              btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
+          };
+          res.status(201).send(response);
+        }
       }
     }
   }
