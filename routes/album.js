@@ -24,7 +24,7 @@ router.get("/:album_id", async (req, res) => {
 
 router.get("/:album_id/tracks", async (req, res) => {
   const tracks = await Track.find({ album_id: req.params.album_id });
-  if (tracks) {
+  if (tracks.length !== 0) {
     res.status(200).json(tracks);
   } else {
     res.status(404).send("Not found");
@@ -95,8 +95,9 @@ router.put("/:album_id/tracks/play", async (req, res) => {
 });
 
 router.delete("/:album_id", async (req, res) => {
-  const album = await Album.deleteOne({ _id: req.params.album_id });
+  const album = await Album.findById(req.params.album_id);
   if (album) {
+    await Album.deleteOne({ _id: req.params.album_id });
     res.status(204).json(album);
   } else {
     res.status(404).send("Not Found");

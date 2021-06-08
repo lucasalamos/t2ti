@@ -26,7 +26,6 @@ router.get("/:artist_id", async (req, res) => {
 router.get("/:artist_id/albums", async (req, res) => {
   const albums = await Album.find({ artist_id: req.params.artist_id });
   if (albums.length !== 0) {
-    console.log(albums);
     res.status(200).json(albums);
   } else {
     res.status(404).send("Not Found");
@@ -36,7 +35,7 @@ router.get("/:artist_id/albums", async (req, res) => {
 router.get("/:artist_id/tracks", async (req, res) => {
   const albums_id = [];
   const albums = await Album.find({ artist_id: req.params.artist_id });
-  if (!albums) {
+  if (albums.length == 0) {
     res.status(404).send("Not Found");
   } else {
     albums.forEach((album) => {
@@ -162,8 +161,9 @@ router.put("/:artist_id/albums/play", async (req, res) => {
 });
 
 router.delete("/:artist_id", async (req, res) => {
-  const artist = await Artist.deleteOne({ _id: req.params.artist_id });
+  const artist = await Artist.findById(req.params.artist_id);
   if (artist) {
+    await Artist.deleteOne({ _id: req.params.artist_id });
     res.status(204).json(artist);
   } else {
     res.status(404).send("Not Found");

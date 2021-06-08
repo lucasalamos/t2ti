@@ -33,9 +33,11 @@ router.put("/:track_id/play", async (req, res) => {
 });
 
 router.delete("/:track_id", async (req, res) => {
-  const track = await Track.deleteOne({ _id: req.params.track_id });
+  const track = await Track.findById(req.params.track_id);
+
   if (track) {
-    res.status(200).json(track);
+    await Track.deleteOne({ _id: req.params.track_id });
+    res.status(204).json(track);
   } else {
     res.status(404).send("Not Found");
   }
