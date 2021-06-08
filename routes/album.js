@@ -58,8 +58,12 @@ router.post("/:album_id/tracks", async (req, res) => {
             name: req.body.name,
             duration: req.body.duration,
             times_played: 0,
-            artist: "http://localhost:3000/artists/" + album.artist_id,
-            album: "http://localhost:3000/albums/" + req.params.album_id,
+            artist:
+              "https://lucas-deploy-app.herokuapp.com/artists/" +
+              album.artist_id,
+            album:
+              "https://lucas-deploy-app.herokuapp.com/albums/" +
+              req.params.album_id,
             self:
               "http://localhost:3000/tracks/" +
               btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
@@ -69,10 +73,14 @@ router.post("/:album_id/tracks", async (req, res) => {
             name: req.body.name,
             duration: req.body.duration,
             times_played: 0,
-            artist: "http://localhost:3000/artists/" + album.artist_id,
-            album: "http://localhost:3000/albums/" + req.params.album_id,
+            artist:
+              "https://lucas-deploy-app.herokuapp.com/artists/" +
+              album.artist_id,
+            album:
+              "https://lucas-deploy-app.herokuapp.com/albums/" +
+              req.params.album_id,
             self:
-              "http://localhost:3000/tracks/" +
+              "https://lucas-deploy-app.herokuapp.com/tracks/" +
               btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
           };
           res.status(201).send(response);

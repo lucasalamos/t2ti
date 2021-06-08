@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dburl =
-  "mongodb+srv://lucasdb:lucasdbpassword@cluster0.939ev.mongodb.net/lucasdb?retryWrites=true&w=majority";
+  "mongodb+srv://lucasdb:lucasdbpassword@cluster0.7ifeo.mongodb.net/lucasdb?retryWrites=true&w=majority";
 const artistsRoute = require("./routes/artist");
 const albumsRoute = require("./routes/album");
 const tracksRoute = require("./routes/track");
@@ -15,11 +15,11 @@ app.use("/albums", albumsRoute);
 app.use("/tracks", tracksRoute);
 
 app.get("/", (req, res) => {
-  res.send("T2 Taller de Integracion \nLucas Alamos Illanes");
+  res.send("T2 Taller de Integracion \nLucas Alamos");
 });
 
 mongoose.connect(
   dburl,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  () => app.listen(3000)
+  () => app.listen(process.env.PORT || 3000)
 );
