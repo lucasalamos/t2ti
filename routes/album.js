@@ -59,13 +59,13 @@ router.post("/:album_id/tracks", async (req, res) => {
             duration: req.body.duration,
             times_played: 0,
             artist:
-              "https://lucas-deploy-app.herokuapp.com/artists/" +
+              "https://gentle-bayou-17296.herokuapp.com/artists/" +
               album.artist_id,
             album:
-              "https://lucas-deploy-app.herokuapp.com/albums/" +
+              "https://gentle-bayou-17296.herokuapp.com/albums/" +
               req.params.album_id,
             self:
-              "http://localhost:3000/tracks/" +
+              "https://gentle-bayou-17296.herokuapp.com/tracks/" +
               btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
           });
           await track.save();
@@ -74,13 +74,13 @@ router.post("/:album_id/tracks", async (req, res) => {
             duration: req.body.duration,
             times_played: 0,
             artist:
-              "https://lucas-deploy-app.herokuapp.com/artists/" +
+              "https://gentle-bayou-17296.herokuapp.com/artists/" +
               album.artist_id,
             album:
-              "https://lucas-deploy-app.herokuapp.com/albums/" +
+              "https://gentle-bayou-17296.herokuapp.com/albums/" +
               req.params.album_id,
             self:
-              "https://lucas-deploy-app.herokuapp.com/tracks/" +
+              "https://gentle-bayou-17296.herokuapp.com/tracks/" +
               btoa(req.body.name + ":" + req.params.album_id).slice(0, 22),
           };
           res.status(201).send(response);
