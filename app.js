@@ -15,7 +15,7 @@ app.use("/albums", albumsRoute);
 app.use("/tracks", tracksRoute);
 
 app.get("/", (req, res) => {
-  res.send("T2 Taller de Integracion \nLucas Alamos");
+  res.send("T2 Taller de Integracion \nLucas Alamos Illanes");
 });
 
 mongoose.connect(
